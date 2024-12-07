@@ -2,10 +2,8 @@ package com.app;
 
 import jakarta.persistence.*;
 
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.util.Date;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 public class DateEntry {
@@ -48,5 +46,29 @@ public class DateEntry {
     public void updateEndTimeToNow(int z) {
         OffsetDateTime now = OffsetDateTime.now(ZoneOffset.ofHours(z));
         setEndTime(now.toString());
+    }
+
+    @Override
+    public String toString() {
+        // Parse the timestamp string into ZonedDateTime
+        ZonedDateTime originalStartTime= ZonedDateTime.parse(this.startTime);
+        ZonedDateTime originalEndTime= ZonedDateTime.parse(this.endTime);
+
+        // Convert to the desired time zone (example: UTC)
+        ZoneId targetZone = ZoneId.of(originalStartTime.getZone().toString());  // You can change this to any time zone of interest
+        ZonedDateTime convertedStartTime = originalStartTime.withZoneSameInstant(targetZone);
+        ZonedDateTime convertedEndTime = originalEndTime.withZoneSameInstant(targetZone);
+
+        // Define the desired output format
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        // Format the converted time
+        String formattedDate = convertedStartTime.format(dateFormatter);
+        String formattedStartTime = convertedStartTime.format(timeFormatter);
+        String formattedEndTime = convertedEndTime.format(timeFormatter);
+
+        // Output the result
+        return formattedDate + ", " + formattedStartTime + ", " + formattedEndTime + "\n";
     }
 }
