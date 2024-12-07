@@ -1,9 +1,11 @@
 package com.app;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
 
 @Entity
 public class DateEntry {
@@ -12,8 +14,10 @@ public class DateEntry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false)
     private String startTime;
 
+    @Column(nullable = false)
     private String endTime;
 
     public Integer getId() {
@@ -34,5 +38,15 @@ public class DateEntry {
 
     public String getEndTime() {
         return this.endTime;
+    }
+
+    public void updateStartTimeToNow(int z) {
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.ofHours(z));
+        setStartTime(now.toString());
+    }
+
+    public void updateEndTimeToNow(int z) {
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.ofHours(z));
+        setEndTime(now.toString());
     }
 }

@@ -27,6 +27,15 @@ public class MainController {
         );
     }
 
+    @GetMapping(path = "/test")
+    public @ResponseBody ResponseEntity<?> test() {
+        DateEntry t = new DateEntry();
+        t.updateStartTimeToNow(-5);
+        t.updateEndTimeToNow(-5);
+        dateEntryRepository.save(t);
+        return ResponseEntity.ok(t.getStartTime() + "    " + t.getEndTime());
+    }
+
     @PostMapping(path = "/post")
     public @ResponseBody ResponseEntity<?> post (
             @RequestBody DateEntry entry
@@ -37,7 +46,7 @@ public class MainController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(path = "/patch")
+    @PatchMapping(path = "/patch")
     public @ResponseBody ResponseEntity<?> patch (
             @RequestBody DateEntry entry
     ) {
