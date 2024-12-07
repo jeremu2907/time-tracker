@@ -1,6 +1,7 @@
 package com.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.Nested;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,42 +28,46 @@ public class MainController {
         );
     }
 
-    @GetMapping(path = "/test")
-    public @ResponseBody ResponseEntity<?> test() {
-        DateEntry t = new DateEntry();
-        t.updateStartTimeToNow(-5);
-        t.updateEndTimeToNow(-5);
-        dateEntryRepository.save(t);
-        return ResponseEntity.ok(t.getStartTime() + "    " + t.getEndTime());
-    }
-
     @PostMapping(path = "/post")
     public @ResponseBody ResponseEntity<?> post (
-            @RequestBody DateEntry entry
+            @RequestBody RequestBodyType.TimeZone timeZone
     ) {
         DateEntry dateEntry = new DateEntry();
-        dateEntry.setStartTime(entry.getStartTime());
+        dateEntry.updateStartTimeToNow(timeZone.zone);
+        dateEntry.updateEndTimeToNow(timeZone.zone);
         dateEntryRepository.save(dateEntry);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(dateEntry);
     }
 
     @PatchMapping(path = "/patch")
     public @ResponseBody ResponseEntity<?> patch (
-            @RequestBody DateEntry entry
+            @RequestBody RequestBodyType.EntryAndZone entryAndZone
     ) {
-        Optional<DateEntry> dateEntry = dateEntryRepository.findById(entry.getId());
+        Optional<DateEntry> dateEntry = dateEntryRepository.findById(entryAndZone.id);
 
         if(dateEntry.isEmpty()){
             return ResponseEntity.notFound().build();
         }
 
-        if(!dateEntry.get().getStartTime().equals(entry.getStartTime())) {
-            dateEntry.get().setStartTime(entry.getStartTime());
+        dateEntry.get().updateEndTimeToNow(entryAndZone.zone);
+
+        dateEntryRepository.save(dateEntry.get());
+
+        return ResponseEntity.ok(dateEntry.get());
+    }
+
+    @PutMapping(path = "/put")
+    public @ResponseBody ResponseEntity<?> put (
+            @RequestBody RequestBodyType.EntryAndZone entryAndZone
+    ) {
+        Optional<DateEntry> dateEntry = dateEntryRepository.findById(entryAndZone.id);
+
+        if(dateEntry.isEmpty()){
+            return ResponseEntity.notFound().build();
         }
 
-        if(!dateEntry.get().getEndTime().equals(entry.getEndTime())) {
-            dateEntry.get().setEndTime(entry.getEndTime());
-        }
+        dateEntry.get().updateStartTimeToNow(entryAndZone.zone);
+        dateEntry.get().updateEndTimeToNow(entryAndZone.zone);
 
         dateEntryRepository.save(dateEntry.get());
 
