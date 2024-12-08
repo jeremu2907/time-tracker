@@ -1,21 +1,16 @@
 package com.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.Nested;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.http.ResponseEntity;
-
-import javax.xml.crypto.Data;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Optional;
 
 @Controller
@@ -57,6 +52,14 @@ public class MainController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=data.csv")
                 .header(HttpHeaders.CONTENT_TYPE, "text/csv")
                 .body(csvBytes);
+    }
+
+    @DeleteMapping(path = "/delete")
+    public @ResponseBody ResponseEntity<?> delete (
+            @RequestParam long id
+    ) {
+        dateEntryRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping(path = "/post")
