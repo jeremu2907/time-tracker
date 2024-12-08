@@ -6,9 +6,9 @@ public class RequestBodyType {
     }
 
     public static class EntryAndZone {
-         public Integer id;
+         public long id;
          public int zone;
-         public String startTime;
-         public String endTime;
+         public long startTime;
+         public long endTime;
     }
 }

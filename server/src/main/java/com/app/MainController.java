@@ -2,6 +2,7 @@ package com.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.bind.Nested;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class MainController {
     @GetMapping(path = "/all")
     public @ResponseBody ResponseEntity<?> all() {
         return ResponseEntity.ok(
-                dateEntryRepository.findAll()
+                dateEntryRepository.findAll(Sort.by(Sort.Direction.DESC, "startTime"))
         );
     }
 
@@ -63,8 +64,9 @@ public class MainController {
             @RequestBody RequestBodyType.TimeZone timeZone
     ) {
         DateEntry dateEntry = new DateEntry();
-        dateEntry.updateStartTimeToNow(timeZone.zone);
-        dateEntry.updateEndTimeToNow(timeZone.zone);
+        dateEntry.updateStartTimeToNow();
+        dateEntry.updateEndTimeToNow();
+        dateEntry.setZone(timeZone.zone);
 
         dateEntryRepository.save(dateEntry);
 
@@ -81,7 +83,7 @@ public class MainController {
             return ResponseEntity.notFound().build();
         }
 
-        dateEntry.get().updateEndTimeToNow(entryAndZone.zone);
+        dateEntry.get().updateEndTimeToNow();
 
         dateEntryRepository.save(dateEntry.get());
 
@@ -100,6 +102,7 @@ public class MainController {
 
         dateEntry.get().setStartTime(entryAndZone.startTime);
         dateEntry.get().setEndTime(entryAndZone.endTime);
+        dateEntry.get().setZone(entryAndZone.zone);
 
         dateEntryRepository.save(dateEntry.get());
 

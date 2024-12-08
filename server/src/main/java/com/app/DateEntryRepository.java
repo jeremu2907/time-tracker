@@ -1,7 +1,11 @@
 package com.app;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Sort;
 
-public interface DateEntryRepository extends CrudRepository<DateEntry, Integer>{
-    
+import java.util.List;
+
+public interface DateEntryRepository extends CrudRepository<DateEntry, Long>{
+
+    List<DateEntry> findAll(Sort sort);
 }
