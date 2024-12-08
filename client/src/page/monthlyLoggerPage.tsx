@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { ENDPOINT } from "@/config";
 import { unixTimeStampToReadableDate, unixTimeStampToReadableTime } from "@/utils";
-import { Separator } from "@radix-ui/react-separator";
 
 interface DateEntry {
     id: number,
@@ -39,14 +38,29 @@ export default function MonthlyLoggerPage() {
     );
 
     return (
-        <div className="border-l border-solid pl-10">
+        <div className="border-l border-solid pl-10 flex flex-col">
+            <button className="mb-10 self-auto">+</button>
             {entries.map((entry) => {
                 return (
                     <div key={`date-entry-${entry.id}`} className="">
-                        <h2 className="in-line">{entry.dateParsed}</h2>
+                        <h2 className="font-bold">{entry.dateParsed}</h2>
                         <div className="flex gap-10">
-                            <p>{entry.startTimeParsed}</p>
-                            <p>{entry.endTimeParsed}</p>
+                            <div>
+                                <p>Start</p>
+                                <input 
+                                    defaultValue={entry.startTimeParsed}
+                                    className='p-2'
+                                />
+                                <button className="ml-2">clock in</button>
+                            </div>
+                            <div>
+                                <p>End</p>
+                                <input 
+                                    defaultValue={entry.endTimeParsed}
+                                    className='p-2'
+                                />
+                                <button className="ml-2">clock out</button>
+                            </div>
                         </div>
                         <div className='mb-10' />
                     </div>
