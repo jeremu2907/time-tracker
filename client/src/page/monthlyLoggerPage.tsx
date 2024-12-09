@@ -16,6 +16,14 @@ interface DateEntry {
 export default function MonthlyLoggerPage() {
     const [entries, setEntries] = useState<DateEntry[]>([]);
 
+    // const addRow = () => {
+    //     const dateTime = new Date();
+    //     const newEntry: DateEntry = {
+
+    //     };
+    //     setEntries(prev => [newEntry, ...prev]);
+    // }
+
     const fetchEntries = async () => {
         try {
             const response = await axios.get(`${ENDPOINT}/date-entry/all`);
@@ -43,21 +51,24 @@ export default function MonthlyLoggerPage() {
             {entries.map((entry) => {
                 return (
                     <div key={`date-entry-${entry.id}`} className="">
-                        <h2 className="font-bold">{entry.dateParsed}</h2>
+                        <input
+                            defaultValue={entry.dateParsed}
+                            className='p-2 font-bold w-[10em] bg-transparent border-b mb-2 border-neutral-600'
+                        />
                         <div className="flex gap-10">
                             <div>
                                 <p>Start</p>
-                                <input 
+                                <input
                                     defaultValue={entry.startTimeParsed}
-                                    className='p-2'
+                                    className='p-2 w-[10em]'
                                 />
                                 <button className="ml-2">clock in</button>
                             </div>
                             <div>
                                 <p>End</p>
-                                <input 
+                                <input
                                     defaultValue={entry.endTimeParsed}
-                                    className='p-2'
+                                    className='p-2 w-[10em]'
                                 />
                                 <button className="ml-2">clock out</button>
                             </div>

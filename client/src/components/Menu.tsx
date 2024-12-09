@@ -2,10 +2,10 @@ export function Menu() {
     return (
         <div className='flex gap-10 justify-end'>
             <button>
-                export .csv
+                csv
             </button>
             <button>
-                save changes
+                save
             </button>
         </div>
     )

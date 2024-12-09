@@ -5,7 +5,7 @@ import MonthlyLoggerPage from './page/monthlyLoggerPage'
 function App() {
     return (
         <>
-            <div className='flex justify-between items-end mb-10 font-semibold'>
+            <div className='flex justify-between items-end mb-10 font-semibold gap-20'>
                 <h1>Time keeper</h1>
                 <Menu />
             </div>
