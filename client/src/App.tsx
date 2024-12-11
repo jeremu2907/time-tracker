@@ -1,18 +1,13 @@
 import './App.css'
-import { Menu } from './components/Menu'
-import MonthlyLoggerPage from './page/monthlyLoggerPage'
+import Summary from './section/Summary'
+import TimeTracker from './section/TimeTracker'
 
 function App() {
     return (
-        <>
-            <div className='flex justify-between items-end mb-10 font-semibold gap-20'>
-                <h1>Time keeper</h1>
-                <Menu />
-            </div>
-            <main className='flex-column content-center'>
-                <MonthlyLoggerPage />
-            </main>
-        </>
+        <div className='flex h-screen w-screen'>
+            <TimeTracker />
+            <Summary />
+        </div>
     )
 }
 
