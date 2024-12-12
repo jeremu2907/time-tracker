@@ -27,15 +27,25 @@
     }
 }
 
+.recent-row-container::-webkit-scrollbar {
+    background-color: rgba(0, 0, 0, 0.237);
+    width: 5px;
+    border-radius: 5px;
+}
+
+.recent-row-container::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 254, 254, 0.057);
+}
+
 .bullet::after{
     content: " ";
     position: relative;
     display: block;
     left: calc(-1.5rem - 5px);
     top: -97px;
-    height: 15px;
-    width: 30px;
-    /* border-radius: 50%; */
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.2);
 }
 
