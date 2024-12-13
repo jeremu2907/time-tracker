@@ -1,14 +1,20 @@
 package com.app;
 
+import java.util.Optional;
+
 public class RequestBodyType {
-     public static class TimeZone {
-        public int zone;
+    public static class DateEntryRequestBody {
+        public String date;
+        public String startTime;
+        public String endTime;
+//        public String note;
     }
 
-    public static class EntryAndZone {
-         public long id;
-         public int zone;
-         public long startTime;
-         public long endTime;
+    public static class DateEntryRequestBodyWithId {
+        public Long id;
+        public String date;
+        public String startTime;
+        public String endTime;
+//        public String note;
     }
 }

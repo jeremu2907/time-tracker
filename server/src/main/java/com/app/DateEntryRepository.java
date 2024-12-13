@@ -8,4 +8,5 @@ import java.util.List;
 public interface DateEntryRepository extends CrudRepository<DateEntry, Long>{
 
     List<DateEntry> findAll(Sort sort);
+    List<DateEntry> findByDateStartingWith(String prefix, Sort sort);
 }
