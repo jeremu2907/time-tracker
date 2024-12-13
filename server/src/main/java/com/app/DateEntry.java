@@ -14,7 +14,7 @@ public class DateEntry {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String date;
@@ -28,20 +28,31 @@ public class DateEntry {
     @Column(nullable = true)
     private String note;
 
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setStartTime(String startTime) {
+    public DateEntry setDate(String date) {
+        this.date = date;
+        return this;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public DateEntry setStartTime(String startTime) {
         this.startTime = startTime;
+        return this;
     }
 
     public String getStartTime() {
         return this.startTime;
     }
 
-    public void setEndTime(String endTime) {
+    public DateEntry setEndTime(String endTime) {
         this.endTime = endTime;
+        return this;
     }
 
     public String getEndTime() {

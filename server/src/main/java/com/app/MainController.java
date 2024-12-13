@@ -32,10 +32,10 @@ public class MainController {
         );
     }
 
-    @GetMapping(path = "/month")
+    @GetMapping(path = "/by-year-month")
     public @ResponseBody ResponseEntity<?> month(
-            @RequestParam("year") int year,
-            @RequestParam("month") int month
+            @RequestParam("year") String year,
+            @RequestParam("month") String month
     ) {
         Iterable<DateEntry> dateEntries = dateEntryRepository.findByDateStartingWith(
                 FormatUtils.yearMonthFormat(year, month),
@@ -46,12 +46,19 @@ public class MainController {
     }
 
     @GetMapping(path = "csv")
-    public @ResponseBody ResponseEntity<?> csv() throws IOException {
+    public @ResponseBody ResponseEntity<?> csv(
+            @RequestParam("year") String year,
+            @RequestParam("month") String month
+    ) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         Writer writer = new OutputStreamWriter(byteArrayOutputStream);
 
-        Iterable<DateEntry> dateEntries = dateEntryRepository.findAll();
-        for(DateEntry entry : dateEntries) {
+        Iterable<DateEntry> dateEntries = dateEntryRepository.findByDateStartingWith(
+                FormatUtils.yearMonthFormat(year, month),
+                Sort.by(Sort.Direction.DESC, "date", "startTime")
+        );
+
+        for (DateEntry entry : dateEntries) {
             writer.write(entry.toString());
         }
 
@@ -68,7 +75,7 @@ public class MainController {
     }
 
     @DeleteMapping(path = "/delete")
-    public @ResponseBody ResponseEntity<?> delete (
+    public @ResponseBody ResponseEntity<?> delete(
             @RequestParam long id
     ) {
         dateEntryRepository.deleteById(id);
@@ -76,13 +83,11 @@ public class MainController {
     }
 
     @PostMapping(path = "/post")
-    public @ResponseBody ResponseEntity<?> post (
-            @RequestBody RequestBodyType.TimeZone timeZone
+    public @ResponseBody ResponseEntity<?> post(
+            @RequestBody RequestBodyType.DateEntryRequestBody body
     ) {
         DateEntry dateEntry = new DateEntry();
-        dateEntry.updateStartTimeToNow();
-        dateEntry.updateEndTimeToNow();
-        dateEntry.setZone(timeZone.zone);
+        dateEntry.setDate(body.date).setStartTime(body.startTime).setEndTime(body.endTime);
 
         dateEntryRepository.save(dateEntry);
 
@@ -90,38 +95,48 @@ public class MainController {
     }
 
     @PatchMapping(path = "/patch")
-    public @ResponseBody ResponseEntity<?> patch (
-            @RequestBody RequestBodyType.EntryAndZone entryAndZone
+    public @ResponseBody ResponseEntity<?> patch(
+            @RequestBody RequestBodyType.DateEntryRequestBodyWithId body
     ) {
-        Optional<DateEntry> dateEntry = dateEntryRepository.findById(entryAndZone.id);
+        Optional<DateEntry> result = dateEntryRepository.findById(body.id);
 
-        if(dateEntry.isEmpty()){
+        if (result.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        dateEntry.get().updateEndTimeToNow();
+        DateEntry dateEntry = result.get();
 
-        dateEntryRepository.save(dateEntry.get());
+        if(!body.date.equals(dateEntry.getDate())) {
+            dateEntry.setDate(body.date);
+        }
+        if(!body.startTime.equals(dateEntry.getStartTime())) {
+            dateEntry.setStartTime(body.startTime);
+        }
+        if(!body.endTime.equals(dateEntry.getEndTime())) {
+            dateEntry.setEndTime(body.endTime);
+        }
 
-        return ResponseEntity.ok(dateEntry.get());
+        dateEntryRepository.save(dateEntry);
+
+        return ResponseEntity.ok(dateEntry);
     }
 
     @PutMapping(path = "/put")
-    public @ResponseBody ResponseEntity<?> put (
-            @RequestBody RequestBodyType.EntryAndZone entryAndZone
+    public @ResponseBody ResponseEntity<?> put(
+            @RequestBody RequestBodyType.DateEntryRequestBodyWithId body
     ) {
-        Optional<DateEntry> dateEntry = dateEntryRepository.findById(entryAndZone.id);
+        Optional<DateEntry> result = dateEntryRepository.findById(body.id);
 
-        if(dateEntry.isEmpty()){
+        if (result.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        dateEntry.get().setStartTime(entryAndZone.startTime);
-        dateEntry.get().setEndTime(entryAndZone.endTime);
-        dateEntry.get().setZone(entryAndZone.zone);
+        DateEntry dateEntry = result.get();
 
-        dateEntryRepository.save(dateEntry.get());
+        dateEntry.setDate(body.date).setStartTime(body.startTime).setEndTime(body.endTime);
 
-        return ResponseEntity.ok(dateEntry.get());
+        dateEntryRepository.save(dateEntry);
+
+        return ResponseEntity.ok(dateEntry);
     }
 }
