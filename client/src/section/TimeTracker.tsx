@@ -25,10 +25,10 @@ const TimeTracker: React.FC = () => {
     return (
         <section className='flex-[3] bg-baseLight h-auto w-full p-10 flex-col flex'>
             <h1>Time Tracker</h1>
-            <h2 className='mt-40 mb-24 text-8xl font-semibold self-center'>
+            <h2 className='mt-32 mb-20 text-8xl font-semibold self-center'>
                 {currentDate}
             </h2>
-            <div className='flex justify-evenly w-full'>
+            <div className='flex justify-evenly w-full mb-20'>
                 <div className='flex flex-col gap-12'>
                     <Input
                         type='time'
@@ -46,6 +46,7 @@ const TimeTracker: React.FC = () => {
                     <Button value='clock out' onClick={() => { clockIn(setEndTime)}} />
                 </div>
             </div>
+            <Button value='submit' onClick={() => { }} />
         </section>
     )
 }
