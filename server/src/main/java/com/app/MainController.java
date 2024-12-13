@@ -58,6 +58,8 @@ public class MainController {
                 Sort.by(Sort.Direction.DESC, "date", "startTime")
         );
 
+        writer.write("Date, Clocked in, Clocked out, Notes\n");
+
         for (DateEntry entry : dateEntries) {
             writer.write(entry.toString());
         }

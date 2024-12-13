@@ -3,14 +3,15 @@ import React from 'react';
 import Input from './Input';
 
 interface RowProps {
+    id: number,
     date: string;
     start: string;
     end: string;
-    callBack: (event: React.FormEvent<HTMLInputElement>) => void;
+    callBack?: (event: React.FormEvent<HTMLInputElement>) => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const RecentRow: React.FC<RowProps> = ({ date, start, end, callBack }) => {
+const RecentRow: React.FC<RowProps> = ({ id, date, start, end, callBack }) => {
     return (
         <li className='w-full mb-12'>
             <form className='bullet'>

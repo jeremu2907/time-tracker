@@ -7,6 +7,18 @@ export function getCurrentDate() {
     return `${year}-${month}-${day}`;
 };
 
+export function getCurrentMonth() {
+    const today = new Date();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    return `${month}`;
+}
+
+export function getCurrentYear() {
+    const today = new Date();
+    const year = today.getFullYear();
+    return `${year}`;
+}
+
 // Convert yyyy-mm-dd to MMM dd, yyyy
 export function standardDateToUSConvention(htmlStandardDate: string): string {
     // Split the input date string
