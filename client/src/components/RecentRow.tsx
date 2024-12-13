@@ -69,7 +69,7 @@ const RecentRow: React.FC<RowProps> = ({ id, date, start, end, callBack }) => {
                         onChange={(e) => { setDateDisplay(e.currentTarget.value) }}
                     />
                     <Button role='button' value='delete' styles='text-sm p-2 h-fit ml-auto' onClick={removeEntry}/>
-                    <Button role='button' value='cancel' styles='text-sm p-2 h-fit ml-auto' onClick={revertValues}/>
+                    <Button role='button' value='cancel' styles='text-sm p-2 h-fit ml-5' onClick={revertValues}/>
                     <Button role='submit' value='update' styles='text-sm p-2 h-fit ml-5'/>
                 </div>
                 <div className='flex justify-between'>
