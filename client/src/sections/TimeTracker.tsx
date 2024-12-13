@@ -36,7 +36,8 @@ const TimeTracker: React.FC = () => {
             data
         )
 
-        toast.success("Submitted time entry")
+        toast.success("Submitted time entry");
+        setTimeout(() => {window.location.reload()}, 3000);
     }
 
     useEffect(() => {

@@ -10,7 +10,7 @@ public class GlobalCorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // Apply CORS to all paths
                 .allowedOrigins("*") // Allow requests from this origin
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allow these HTTP methods
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH") // Allow these HTTP methods
                 .allowedHeaders("*") // Allow all headers
                 .allowCredentials(false); // Allow cookies or authentication headers
     }
