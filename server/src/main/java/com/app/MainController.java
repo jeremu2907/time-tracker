@@ -28,8 +28,21 @@ public class MainController {
     @GetMapping(path = "/all")
     public @ResponseBody ResponseEntity<?> all() {
         return ResponseEntity.ok(
-                dateEntryRepository.findAll(Sort.by(Sort.Direction.DESC, "startTime"))
+                dateEntryRepository.findAll(Sort.by(Sort.Direction.DESC, "date", "startTime"))
         );
+    }
+
+    @GetMapping(path = "/month")
+    public @ResponseBody ResponseEntity<?> month(
+            @RequestParam("year") int year,
+            @RequestParam("month") int month
+    ) {
+        Iterable<DateEntry> dateEntries = dateEntryRepository.findByDateStartingWith(
+                FormatUtils.yearMonthFormat(year, month),
+                Sort.by(Sort.Direction.DESC, "date", "startTime")
+        );
+
+        return ResponseEntity.ok(dateEntries);
     }
 
     @GetMapping(path = "csv")

@@ -1,86 +1,55 @@
 package com.app;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.*;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+
+// Each row is assumed to be in local date time, not normalized to UTC + z
 
 @Entity
 public class DateEntry {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false)
-    private long startTime;
+    private String date;
 
     @Column(nullable = false)
-    private long endTime;
+    private String startTime;
 
-    @Column(nullable = false)
-    private int zone;
+    @Column
+    private String endTime;
+
+    @Column(nullable = true)
+    private String note;
 
     public long getId() {
         return this.id;
     }
 
-    public void setZone(int zone) {
-        this.zone = zone;
-    }
-
-    public int getZone() {
-        return this.zone;
-    }
-
-    public void setStartTime(long startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public long getStartTime() {
+    public String getStartTime() {
         return this.startTime;
     }
 
-    public void setEndTime(long endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
-    public long getEndTime() {
+    public String getEndTime() {
         return this.endTime;
-    }
-
-    public void updateStartTimeToNow() {
-        setStartTime(Instant.now().getEpochSecond());
-    }
-
-    public void updateEndTimeToNow() {
-        setEndTime(Instant.now().getEpochSecond());
     }
 
     @Override
     public String toString() {
-        // Parse the timestamp string into ZonedDateTime
-        ZonedDateTime startTimeLocal = ZonedDateTime.ofInstant(
-                Instant.ofEpochSecond(this.startTime),
-                ZoneOffset.ofHours(this.zone).normalized()
-        );
-        ZonedDateTime endTimeLocal = ZonedDateTime.ofInstant(
-                Instant.ofEpochSecond(this.endTime),
-                ZoneOffset.ofHours(this.zone).normalized()
-        );
-
-        // Define the desired output format
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-
-        // Format the converted time
-        String formattedDate = startTimeLocal.format(dateFormatter);
-        String formattedStartTime = startTimeLocal.format(timeFormatter);
-        String formattedEndTime = endTimeLocal.format(timeFormatter);
-
-        // Output the result
-        return formattedDate + ", " + formattedStartTime + ", " + formattedEndTime + "\n";
+        return date + ", " + startTime + ", " + endTime + ", "  + note + "\n";
     }
 }
