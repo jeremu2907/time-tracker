@@ -1,0 +1,11 @@
+services:
+  server:
+    image: time-tracker-server
+    build:
+      context: ./server
+    ports:
+      - "8080:8080"
+    env_file:
+      - server.env
+    entrypoint: [ "java", "-jar", "/opt/app/time-tracker-server.jar" ]
+    
