@@ -1,6 +1,6 @@
 services:
   server:
-    image: ghcr.io/jeremu2907/time-tracker:test-ci
+    image: ghcr.io/jeremu2907/time-tracker-server:latest
     # build:
     #   context: ./server
     ports:
@@ -8,4 +8,12 @@ services:
     env_file:
       - server.env
     entrypoint: [ "java", "-jar", "/opt/app/time-tracker-server.jar" ]
+  
+  client:
+    image: ghcr.io/jeremu2907/time-tracker-client:latest
+    # build:
+    #   context: ./client
+    ports:
+      - "3032:3000"
+    entrypoint: [ "serve", "-s", "dist" ]
     
