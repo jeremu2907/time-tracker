@@ -15,7 +15,7 @@ interface RowProps {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const RecentRow: React.FC<RowProps> = ({ id, date, start, end, callBack }) => {
+const RecentRow: React.FC<RowProps> = ({ id, date, start, end }) => {
     const [dateDisplay, setDateDisplay] = useState(date);
     const [startDisplay, setStartDisplay] = useState(start);
     const [endDisplay, setEndDisplay] = useState(end);
