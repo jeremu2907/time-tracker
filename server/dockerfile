@@ -1,0 +1,17 @@
+FROM gradle:8.11.1-jdk17 as builder
+
+WORKDIR /opt/app
+ENV HOME=/opt/app
+
+COPY . /opt/app
+
+RUN gradle build
+
+FROM ibm-semeru-runtimes:open-17-jre-jammy
+
+WORKDIR /opt/app
+ENV HOME=/opt/app
+
+COPY --from=builder $HOME/build/libs/time-tracker-server.jar $HOME/time-tracker-server.jar
+
+EXPOSE 8080
