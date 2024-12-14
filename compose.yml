@@ -1,8 +1,8 @@
 services:
   server:
-    image: time-tracker-server
-    build:
-      context: ./server
+    image: ghcr.io/jeremu2907/time-tracker:test-ci
+    # build:
+    #   context: ./server
     ports:
       - "8080:8080"
     env_file:
