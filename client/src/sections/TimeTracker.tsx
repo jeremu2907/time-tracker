@@ -1,10 +1,9 @@
 import React, { FormEvent, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import Button from '../components/Button';
 import Input from '../components/Input';
+import { api } from '../config';
 import { getCurrentDate, getCurrentTime, standardDateToUSConvention } from '../utils';
-import axios from 'axios';
-import { ENDPOINT } from '../config';
-import { toast } from 'react-toastify';
 
 const TimeTracker: React.FC = () => {
     const [currentDate, setCurrentDate] = useState<string>(standardDateToUSConvention(getCurrentDate()));
@@ -48,8 +47,8 @@ const TimeTracker: React.FC = () => {
             endTime: endTime
         };
 
-        await axios.post(
-            `${ENDPOINT}/post`,
+        await api.post(
+            '/post',
             data
         )
 

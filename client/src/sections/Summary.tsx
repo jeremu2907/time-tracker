@@ -1,9 +1,8 @@
 import React, { FormEvent, useEffect, useState } from 'react';
-import Input from '../components/Input';
 import Button from '../components/Button';
+import Input from '../components/Input';
 import RecentRow from '../components/RecentRow';
-import axios from 'axios';
-import { ENDPOINT } from '../config';
+import { api } from '../config';
 import { getCurrentMonth, getCurrentYear } from '../utils';
 
 interface dateEntry {
@@ -28,14 +27,14 @@ const Summary: React.FC = () => {
     }
 
     const updateEntries = async () => {
-        const url = `${ENDPOINT}/by-year-month?year=${year}&month=${month}`
-        const response = await axios.get(url);
+        const url = `/by-year-month?year=${year}&month=${month}`;
+        const response = await api.get(url);
         setDateEntries(response.data);
     }
 
     const requestCSV = async () => {
-        const url = `${ENDPOINT}/csv?year=${year}&month=${month}`
-        const response = await axios.get(url, {
+        const url = `/csv?year=${year}&month=${month}`
+        const response = await api.get(url, {
             responseType: 'blob', // Ensures the response is treated as binary data
         });
 

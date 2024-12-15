@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 
-import Input from './Input';
-import axios from 'axios';
-import { ENDPOINT } from '../config';
-import Button from './Button';
 import { toast } from 'react-toastify';
+import { api } from '../config';
+import Button from './Button';
+import Input from './Input';
 
 interface RowProps {
     id: number,
@@ -29,8 +28,8 @@ const RecentRow: React.FC<RowProps> = ({ id, date, start, end }) => {
             endTime: formData.get('end')
         }
 
-        await axios.patch(
-            `${ENDPOINT}/patch`,
+        await api.patch(
+            '/patch',
             data
         );
 
@@ -45,8 +44,8 @@ const RecentRow: React.FC<RowProps> = ({ id, date, start, end }) => {
     }
 
     const removeEntry = async () => {
-        const url = `${ENDPOINT}/delete?id=${id}`;
-        await axios.delete(url);
+        const url = `delete?id=${id}`;
+        await api.delete(url);
         toast.success("Removed entry");
         setTimeout(() => {window.location.reload()}, 3000);
     }
