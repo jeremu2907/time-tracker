@@ -3,6 +3,9 @@ services:
     image: ghcr.io/jeremu2907/time-tracker-server:latest
     # build:
     #   context: ./server
+    networks:
+      - timetracker
+    hostname: timetrackerserver
     ports:
       - "8080:8080"
     env_file:
@@ -11,8 +14,15 @@ services:
   
   client:
     image: ghcr.io/jeremu2907/time-tracker-client:latest
-    build:
-      context: ./client
+    # build:
+    #   context: ./client
+    networks:
+      - timetracker
+    hostname: timetrackerclient
     ports:
       - "3032:3000"
     entrypoint: [ "serve", "-s", "dist" ]
+
+networks:
+  timetracker:
+    external: true
