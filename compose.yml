@@ -1,6 +1,6 @@
 services:
   server:
-    # image: ghcr.io/jeremu2907/time-tracker-server:latest
+    image: ghcr.io/jeremu2907/time-tracker-server:latest
     build:
       context: ./server
     ports:
@@ -10,7 +10,7 @@ services:
     entrypoint: [ "java", "-jar", "/opt/app/time-tracker-server.jar" ]
   
   client:
-    # image: ghcr.io/jeremu2907/time-tracker-client:latest
+    image: ghcr.io/jeremu2907/time-tracker-client:latest
     build:
       context: ./client
     ports:
