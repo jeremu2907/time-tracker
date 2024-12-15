@@ -7,8 +7,8 @@ COPY . .
 
 RUN npm ci
 
-RUN npm i -g serve
-
 RUN npm run build
+
+RUN npm i --global serve
 
 EXPOSE 3000
