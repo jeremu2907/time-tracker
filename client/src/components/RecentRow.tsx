@@ -4,29 +4,30 @@ import { toast } from 'react-toastify';
 import { api } from '../config';
 import Button from './Button';
 import Input from './Input';
+import { DateEntry } from '../interfaces/dateEntry';
 
 interface RowProps {
     id: number;
     date: string;
     start: string;
     end: string;
-    removeEntryCallback: (idx: number) => void;
     idx: number;
+    removeEntryCallback: (idx: number) => void;
+    updateDateEntry: (idx: number, value: DateEntry) => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const RecentRow: React.FC<RowProps> = ({ id, date, start, end, removeEntryCallback, idx }) => {
+const RecentRow: React.FC<RowProps> = ({ id, date, start, end, idx, removeEntryCallback, updateDateEntry}) => {
     const [dateDisplay, setDateDisplay] = useState(date);
     const [startDisplay, setStartDisplay] = useState(start);
     const [endDisplay, setEndDisplay] = useState(end);
 
     const updateValues = async (form: HTMLFormElement) => {
         const formData = new FormData(form);
-        const data = {
+        const data: DateEntry = {
             id: id,
-            date: formData.get('date'),
-            startTime: formData.get('start'),
-            endTime: formData.get('end')
+            date: formData.get('date')?.toString() ?? '',
+            startTime: formData.get('start')?.toString() ?? '',
+            endTime: formData.get('end')?.toString() ?? ''
         }
 
         await api.patch(
@@ -35,6 +36,7 @@ const RecentRow: React.FC<RowProps> = ({ id, date, start, end, removeEntryCallba
         );
 
         toast.success("Updated entry");
+        updateDateEntry(idx, data);
     }
 
     const revertValues = (e: React.MouseEvent<HTMLButtonElement>) => {
