@@ -4,14 +4,17 @@ import Summary from './sections/Summary'
 import TimeTracker from './sections/TimeTracker'
 
 import 'react-toastify/dist/ReactToastify.css';
+import { useState } from 'react';
 
 function App() {
+    const [refreshFlag, setRefreshFlag] = useState(0);
+
     return (
         <div className='flex h-screen w-screen'>
-            <TimeTracker />
-            <Summary />
+            <TimeTracker setRefreshFlag={setRefreshFlag}/>
+            <Summary refreshFlag={refreshFlag}/>
             <ToastContainer
-                position="top-left"
+                position="top-right"
                 autoClose={2000}
                 hideProgressBar={false}
                 newestOnTop={false}

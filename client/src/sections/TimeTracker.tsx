@@ -1,11 +1,15 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { Dispatch, FormEvent, SetStateAction, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import { api } from '../config';
 import { getCurrentDate, getCurrentTime, standardDateToUSConvention } from '../utils';
 
-const TimeTracker: React.FC = () => {
+interface SectionProps {
+    setRefreshFlag: Dispatch<SetStateAction<number>>
+}
+
+const TimeTracker: React.FC<SectionProps> = ({setRefreshFlag}) => {
     const [currentDate, setCurrentDate] = useState<string>(standardDateToUSConvention(getCurrentDate()));
     const [startTime, setStartTime] = useState<string>("");
     const [endTime, setEndTime] = useState<string>("");
@@ -37,7 +41,7 @@ const TimeTracker: React.FC = () => {
 
     const submitButtonClicked = async () => {
         if (startTime === '') {
-            toast('Not clocked in');
+            toast('Not clocked in', {position: "top-left"});
             return;
         }
 
@@ -52,10 +56,12 @@ const TimeTracker: React.FC = () => {
             data
         )
 
-        toast.success("Submitted time entry");
+        toast.success("Submitted time entry", {position: "top-left"});
         localStorage.removeItem(CURRENT_CLOCK_STATUS_KEY);
         console.log("removed local saved data");
-        setTimeout(() => { window.location.reload() }, 3000);
+        setRefreshFlag(prev => prev + 1);
+        setStartTime("");
+        setEndTime("");
     }
 
     const fetchLocalStorageData = () => {
