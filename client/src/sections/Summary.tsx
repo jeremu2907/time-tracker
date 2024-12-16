@@ -12,8 +12,12 @@ interface dateEntry {
     endTime: string;
 }
 
-const Summary: React.FC = () => {
-    const [dateEntries, setDateEntries] = useState<dateEntry[]>();
+interface SectionProps {
+    refreshFlag: number,
+};
+
+const Summary: React.FC<SectionProps> = ({refreshFlag}) => {
+    const [dateEntries, setDateEntries] = useState<dateEntry[]>([]);
     const [year, setYear] = useState<string>(getCurrentYear());
     const [month, setMonth] = useState<string>(getCurrentMonth());
 
@@ -52,9 +56,17 @@ const Summary: React.FC = () => {
         document.body.removeChild(link);
     }
 
+    const removeEntryCallback = (idx: number) => {
+        const newList = [
+            ...dateEntries.slice(0, idx),
+            ...dateEntries.slice(idx + 1)
+        ];
+        setDateEntries(newList);
+    }
+
     useEffect(() => {
         updateEntries();
-    }, [year, month])
+    }, [year, month, refreshFlag])
 
     return (
         <section className='flex-[2] bg-baseDark w-full p-10'>
@@ -64,7 +76,7 @@ const Summary: React.FC = () => {
                 <Button value='.csv' onClick={requestCSV} />
             </div>
             <ul className='border-l h-auto w-auto max-h-[60vh] overflow-y-scroll pl-6 pr-6 recent-row-container'>
-                {dateEntries && dateEntries.map((dateEntry: dateEntry) => {
+                {dateEntries && dateEntries.map((dateEntry: dateEntry, idx) => {
                     return (
                         <RecentRow
                             key={`date-entry-${dateEntry.id}`}
@@ -72,6 +84,8 @@ const Summary: React.FC = () => {
                             date={dateEntry.date}
                             start={dateEntry.startTime}
                             end={dateEntry.endTime}
+                            idx={idx}
+                            removeEntryCallback={removeEntryCallback}
                         />)
                 })}
             </ul>

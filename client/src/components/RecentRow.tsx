@@ -6,15 +6,16 @@ import Button from './Button';
 import Input from './Input';
 
 interface RowProps {
-    id: number,
+    id: number;
     date: string;
     start: string;
     end: string;
-    callBack?: (event: React.FormEvent<HTMLInputElement>) => void;
+    removeEntryCallback: (idx: number) => void;
+    idx: number;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const RecentRow: React.FC<RowProps> = ({ id, date, start, end }) => {
+const RecentRow: React.FC<RowProps> = ({ id, date, start, end, removeEntryCallback, idx }) => {
     const [dateDisplay, setDateDisplay] = useState(date);
     const [startDisplay, setStartDisplay] = useState(start);
     const [endDisplay, setEndDisplay] = useState(end);
@@ -34,20 +35,21 @@ const RecentRow: React.FC<RowProps> = ({ id, date, start, end }) => {
         );
 
         toast.success("Updated entry");
-        setTimeout(() => {window.location.reload()}, 3000);
     }
 
-    const revertValues = () => {
+    const revertValues = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
         setDateDisplay(date);
         setStartDisplay(start);
         setEndDisplay(end);
     }
 
-    const removeEntry = async () => {
+    const removeEntry = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
         const url = `delete?id=${id}`;
         await api.delete(url);
         toast.success("Removed entry");
-        setTimeout(() => {window.location.reload()}, 3000);
+        removeEntryCallback(idx);
     }
 
     return (
