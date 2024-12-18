@@ -68,7 +68,7 @@ const Summary: React.FC<SectionProps> = ({refreshFlag}) => {
             };
         }, hours)
 
-        setTotalHours(hours);
+        setTotalHours(Number(hours.toFixed(1)));
     }
 
     const updateWeeklyTotalHours = () => {
@@ -97,7 +97,7 @@ const Summary: React.FC<SectionProps> = ({refreshFlag}) => {
                     return 0;
                 }
             })
-            .reduce((sum, current) => sum + current, 0)
+            .reduce((sum, current) => Number((sum + current).toFixed(1)), 0)
         );
     }
 

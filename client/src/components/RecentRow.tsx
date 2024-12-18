@@ -5,6 +5,7 @@ import { api } from '../config';
 import Button from './Button';
 import Input from './Input';
 import { DateEntry } from '../interfaces/dateEntry';
+import { timeDifferenceHours } from '../utils';
 
 interface RowProps {
     id: number;
@@ -17,9 +18,9 @@ interface RowProps {
 }
 
 const RecentRow: React.FC<RowProps> = ({ id, date, start, end, idx, removeEntryCallback, updateDateEntry}) => {
-    const [dateDisplay, setDateDisplay] = useState(date);
-    const [startDisplay, setStartDisplay] = useState(start);
-    const [endDisplay, setEndDisplay] = useState(end);
+    const [dateDisplay, setDateDisplay] = useState<string>(date);
+    const [startDisplay, setStartDisplay] = useState<string>(start);
+    const [endDisplay, setEndDisplay] = useState<string>(end);
 
     const updateValues = async (form: HTMLFormElement) => {
         const formData = new FormData(form);
@@ -75,7 +76,7 @@ const RecentRow: React.FC<RowProps> = ({ id, date, start, end, idx, removeEntryC
                     <Button role='button' value='cancel' styles='text-sm p-2 h-fit ml-5' onClick={revertValues}/>
                     <Button role='submit' value='update' styles='text-sm p-2 h-fit ml-5'/>
                 </div>
-                <div className='flex justify-between'>
+                <div className='flex justify-between items-center'>
                     <Input
                         styleString='p-0'
                         type='time'
@@ -90,6 +91,7 @@ const RecentRow: React.FC<RowProps> = ({ id, date, start, end, idx, removeEntryC
                         value={endDisplay}
                         onChange={(e) => { setEndDisplay(e.currentTarget.value) }}
                     />
+                    <p><strong>{timeDifferenceHours(start, end)}</strong> hr</p>
                 </div>
             </form>
         </li>
