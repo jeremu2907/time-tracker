@@ -129,7 +129,7 @@ const Summary: React.FC<SectionProps> = ({refreshFlag}) => {
                 <h2>Total hours this month: <strong>{totalHours}</strong> hr</h2>
                 <h2>Total hours this week: <strong>{weeklyTotalHours}</strong> hr</h2>
             </div>
-            <ul className='border-l h-auto w-auto max-h-[60vh] overflow-y-scroll pl-6 pr-6 recent-row-container'>
+            <ul className='border-l h-auto w-auto max-h-[60vh] overflow-y-scroll px-3 recent-row-container'>
                 {dateEntries && dateEntries.map((dateEntry: DateEntry, idx) => {
                     return (
                         <RecentRow
@@ -138,6 +138,7 @@ const Summary: React.FC<SectionProps> = ({refreshFlag}) => {
                             date={dateEntry.date}
                             start={dateEntry.startTime}
                             end={dateEntry.endTime}
+                            note={dateEntry.note}
                             idx={idx}
                             removeEntryCallback={removeEntryCallback}
                             updateDateEntry={updateDateEntry}

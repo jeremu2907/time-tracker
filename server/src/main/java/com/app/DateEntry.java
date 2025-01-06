@@ -59,8 +59,23 @@ public class DateEntry {
         return this.endTime;
     }
 
+    public DateEntry setNote(String note) {
+        this.note = note;
+        return this;
+    }
+
+    public String getNote() {
+        return this.note;
+    }
+
     @Override
     public String toString() {
-        return date + ", " + startTime + ", " + endTime + ", "  + note + "\n";
+        String[] startTimeHHmm = startTime.split(":");
+        String[] endTimeHHmm = endTime.split(":");
+        Float startTimeHour = Float.parseFloat(startTimeHHmm[0]) + (Float.parseFloat(startTimeHHmm[1])/60.0f);
+        Float endTimeHour = Float.parseFloat(endTimeHHmm[0]) + (Float.parseFloat(endTimeHHmm[1])/60.0f);
+        Float duration = endTimeHour - startTimeHour;
+        String formattedDuration = String.format("%.2f", duration);
+        return date + ", " + startTime + ", " + endTime + ", " + formattedDuration + ", " + note + "\n";
     }
 }

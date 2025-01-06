@@ -13,12 +13,18 @@ const TimeTracker: React.FC<SectionProps> = ({setRefreshFlag}) => {
     const [currentDate, setCurrentDate] = useState<string>(standardDateToUSConvention(getCurrentDate()));
     const [startTime, setStartTime] = useState<string>("");
     const [endTime, setEndTime] = useState<string>("");
+    const [note, setNote] = useState<string>("");
     const CURRENT_CLOCK_STATUS_KEY = "CURRENT_CLOCK_STATUS_KEY";
 
     const clockButtonClicked = (name: string, mutator: React.Dispatch<React.SetStateAction<string>>) => {
         const timeT = getCurrentTime();
         mutator(timeT);
         localStorageUpdate(name, timeT);
+    }
+
+    const noteChanged = (name: string, value: string) => {
+        setNote(value);
+        localStorageUpdate(name, value);
     }
 
     const updateTime = (e: FormEvent<HTMLInputElement>, mutator: React.Dispatch<React.SetStateAction<string>>) => {
@@ -48,7 +54,8 @@ const TimeTracker: React.FC<SectionProps> = ({setRefreshFlag}) => {
         const data = {
             date: getCurrentDate(),
             startTime: startTime,
-            endTime: endTime
+            endTime: endTime,
+            note: note
         };
 
         await api.post(
@@ -82,6 +89,7 @@ const TimeTracker: React.FC<SectionProps> = ({setRefreshFlag}) => {
         console.log("found saved data")
         setStartTime(localStorageData.startTime);
         setEndTime(localStorageData.endTime);
+        setNote(localStorageData.note);
     }
 
     useEffect(() => {
@@ -95,9 +103,17 @@ const TimeTracker: React.FC<SectionProps> = ({setRefreshFlag}) => {
     return (
         <section className='flex-[3] bg-baseLight h-auto w-full p-10 flex-col flex overflow-y-auto'>
             <h1>Time Tracker</h1>
-            <h2 className='mt-32 mb-20 text-8xl font-semibold self-center'>
+            <h2 className='mt-20 mb-20 text-8xl font-semibold self-center'>
                 {currentDate}
             </h2>
+            <p>note</p>
+            <Input
+                styleString='w-full opacity-50'
+                type='text'
+                name='note'
+                value={note}
+                onChange={e => {noteChanged('note', e.currentTarget.value)}}
+            />
             <div className='flex justify-evenly w-full mb-20'>
                 <div className='flex flex-col gap-12'>
                     <Input

@@ -58,7 +58,7 @@ public class MainController {
                 Sort.by(Sort.Direction.DESC, "date", "startTime")
         );
 
-        writer.write("Date, Clocked in, Clocked out, Notes\n");
+        writer.write("Date, Clocked in, Clocked out, Duration, Notes\n");
 
         for (DateEntry entry : dateEntries) {
             writer.write(entry.toString());
@@ -89,7 +89,10 @@ public class MainController {
             @RequestBody RequestBodyType.DateEntryRequestBody body
     ) {
         DateEntry dateEntry = new DateEntry();
-        dateEntry.setDate(body.date).setStartTime(body.startTime).setEndTime(body.endTime);
+        dateEntry.setDate(body.date)
+                 .setStartTime(body.startTime)
+                 .setEndTime(body.endTime)
+                 .setNote(body.note);
 
         dateEntryRepository.save(dateEntry);
 
@@ -108,14 +111,17 @@ public class MainController {
 
         DateEntry dateEntry = result.get();
 
-        if(!body.date.equals(dateEntry.getDate())) {
+        if (!body.date.equals(dateEntry.getDate())) {
             dateEntry.setDate(body.date);
         }
-        if(!body.startTime.equals(dateEntry.getStartTime())) {
+        if (!body.startTime.equals(dateEntry.getStartTime())) {
             dateEntry.setStartTime(body.startTime);
         }
-        if(!body.endTime.equals(dateEntry.getEndTime())) {
+        if (!body.endTime.equals(dateEntry.getEndTime())) {
             dateEntry.setEndTime(body.endTime);
+        }
+        if (!body.note.equals(dateEntry.getNote())) {
+            dateEntry.setNote(body.note);
         }
 
         dateEntryRepository.save(dateEntry);

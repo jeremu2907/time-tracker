@@ -12,15 +12,17 @@ interface RowProps {
     date: string;
     start: string;
     end: string;
+    note: string;
     idx: number;
     removeEntryCallback: (idx: number) => void;
     updateDateEntry: (idx: number, value: DateEntry) => void;
 }
 
-const RecentRow: React.FC<RowProps> = ({ id, date, start, end, idx, removeEntryCallback, updateDateEntry}) => {
+const RecentRow: React.FC<RowProps> = ({ id, date, start, end, note, idx, removeEntryCallback, updateDateEntry}) => {
     const [dateDisplay, setDateDisplay] = useState<string>(date);
     const [startDisplay, setStartDisplay] = useState<string>(start);
     const [endDisplay, setEndDisplay] = useState<string>(end);
+    const [noteDisplay, setNoteDisplay] = useState<string>(note ?? undefined);
 
     const updateValues = async (form: HTMLFormElement) => {
         const formData = new FormData(form);
@@ -28,7 +30,8 @@ const RecentRow: React.FC<RowProps> = ({ id, date, start, end, idx, removeEntryC
             id: id,
             date: formData.get('date')?.toString() ?? '',
             startTime: formData.get('start')?.toString() ?? '',
-            endTime: formData.get('end')?.toString() ?? ''
+            endTime: formData.get('end')?.toString() ?? '',
+            note: formData.get('note') ?? ''
         }
 
         await api.patch(
@@ -56,7 +59,7 @@ const RecentRow: React.FC<RowProps> = ({ id, date, start, end, idx, removeEntryC
     }
 
     return (
-        <li className='w-full mb-12'>
+        <li className='w-full mb-12 hover:bg-[#ffffff0a] rounded-xl px-3'>
             <form
                 className='bullet'
                 onSubmit={e => {
@@ -93,6 +96,14 @@ const RecentRow: React.FC<RowProps> = ({ id, date, start, end, idx, removeEntryC
                     />
                     <p><strong>{timeDifferenceHours(start, end)}</strong> hr</p>
                 </div>
+                <p className="mt-4 opacity-50">Notes</p>
+                <Input
+                    styleString='w-full opacity-50'
+                    type='text'
+                    name='note'
+                    value={noteDisplay}
+                    onChange={e => {setNoteDisplay(e.currentTarget.value)}}
+                />
             </form>
         </li>
     );

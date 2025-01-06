@@ -1,4 +1,4 @@
-FROM gradle:8.11.1-jdk17 AS builder
+FROM gradle:8.11.1-jdk23 AS builder
 
 WORKDIR /opt/app
 ENV HOME=/opt/app
@@ -7,7 +7,7 @@ COPY . /opt/app
 
 RUN gradle build
 
-FROM ibm-semeru-runtimes:open-17-jre-jammy
+FROM ibm-semeru-runtimes:open-23-jre-jammy
 
 WORKDIR /opt/app
 ENV HOME=/opt/app

@@ -7,7 +7,7 @@ public class RequestBodyType {
         public String date;
         public String startTime;
         public String endTime;
-//        public String note;
+        public String note;
     }
 
     public static class DateEntryRequestBodyWithId {
@@ -15,6 +15,6 @@ public class RequestBodyType {
         public String date;
         public String startTime;
         public String endTime;
-//        public String note;
+        public String note;
     }
 }

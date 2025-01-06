@@ -1,6 +1,7 @@
 export interface DateEntry {
-    id: number
+    id: number;
     date: string;
     startTime: string;
-    endTime: string
+    endTime: string;
+    note: string;
 };
