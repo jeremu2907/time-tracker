@@ -31,7 +31,7 @@ const RecentRow: React.FC<RowProps> = ({ id, date, start, end, note, idx, remove
             date: formData.get('date')?.toString() ?? '',
             startTime: formData.get('start')?.toString() ?? '',
             endTime: formData.get('end')?.toString() ?? '',
-            note: formData.get('note').toString() ?? ''
+            note: formData.get('note')?.toString() ?? ''
         }
 
         await api.patch(
