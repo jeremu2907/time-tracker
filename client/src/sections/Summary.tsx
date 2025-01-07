@@ -4,7 +4,7 @@ import Input from '../components/Input';
 import RecentRow from '../components/RecentRow';
 import { api } from '../config';
 import { DateEntry } from '../interfaces/dateEntry';
-import { getCurrentDate, getCurrentMonth, getCurrentYear, getWeekNumberInMonth, timeDifferenceHours } from '../utils';
+import { areDatesInSameWeek, getCurrentMonth, getCurrentYear, timeDifferenceHours } from '../utils';
 
 interface SectionProps {
     refreshFlag: number,
@@ -72,14 +72,13 @@ const Summary: React.FC<SectionProps> = ({refreshFlag}) => {
     }
 
     const updateWeeklyTotalHours = () => {
-        const currentWeekNumber = getWeekNumberInMonth(getCurrentDate());
-        let idxOfLastDateInCurrentWeek = -1;
+        let idxOfLastDateInCurrentWeek = 0;
         
-        for(let i = 0; i < dateEntries.length; i++){
-            if(getWeekNumberInMonth(dateEntries[i].date) < currentWeekNumber){
+        for(let i = 0; i < dateEntries.length - 1; i++){
+            if(!areDatesInSameWeek(dateEntries[i].date, dateEntries[i + 1].date)){
                 break;
             } else {
-                idxOfLastDateInCurrentWeek = i;
+                idxOfLastDateInCurrentWeek += 1;
             }
         }
 

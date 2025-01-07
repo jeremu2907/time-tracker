@@ -75,16 +75,33 @@ export function timeDifferenceHours(start: string, end: string) {
     return parseFloat((timeStringToHours(end) - timeStringToHours(start)).toFixed(1));
 }
 
-/**
- * 
- * @param dateString 
- * @returns week number
- */
-export function getWeekNumberInMonth(dateString: string): number {
-    // const date = new Date(dateString);
-    // const startDate = new Date(date.getFullYear(), 0, 1);
-    // const days = Math.floor((date.getTime() - startDate.getTime()) / (1000 * 3600 * 24));
-    // return Math.ceil((days + startDate.getDay() + 1) / 7);
-    const [, , dd] = dateString.split('-').map(item => Number(item));
-    return Math.ceil(dd / 7);
+export function areDatesInSameWeek(dateStr1: string, dateStr2: string) {
+    // Helper function to get the start of the week (Monday) for a given date
+    function getStartOfWeek(date: any) {
+        const day = date.getDay();
+        const diff = (day === 0 ? 6 : day - 1); // Get the number of days to subtract to get the previous Monday
+        const startOfWeek = new Date(date);
+        startOfWeek.setDate(date.getDate() - diff);
+        startOfWeek.setHours(0, 0, 0, 0);  // Set time to midnight for accurate comparison
+        return startOfWeek;
+    }
+
+    // Convert the string to Date objects but manually adjust them for local time
+    function parseLocalDate(dateStr: any) {
+        const [year, month, day] = dateStr.split('-').map(Number); // Split into components
+        const localDate = new Date(year, month - 1, day);  // Create a new Date object with local time
+        localDate.setHours(0, 0, 0, 0);  // Ensure the time is set to midnight
+        return localDate;
+    }
+
+    // Convert string to Date objects
+    const date1 = new Date(parseLocalDate(dateStr1));
+    const date2 = new Date(parseLocalDate(dateStr2));
+
+    // Get the start of the week (Monday) for both dates
+    const startOfWeek1 = getStartOfWeek(date1);
+    const startOfWeek2 = getStartOfWeek(date2);
+
+    // Compare if the start of the week for both dates is the same
+    return startOfWeek1.getTime() === startOfWeek2.getTime();
 }
